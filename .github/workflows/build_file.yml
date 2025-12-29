@@ -22,4 +22,4 @@ jobs:
     - name: Simulate build
       run: |
         echo "This build process for application D"
-        sleep 5
+        sleep 4
