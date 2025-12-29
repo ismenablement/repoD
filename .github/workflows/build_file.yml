@@ -23,4 +23,13 @@ jobs:
       run: |
         echo "This build process for application D"
         sleep 4
-        exit 1
+  build_job2:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Simulate build
+      run: |
+        echo "This build process for application D - job2"
+        sleep 3
+      
