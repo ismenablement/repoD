@@ -1,4 +1,4 @@
-name: Build
+name: Build_name
 run-name: ${{ inputs.orchestrator_runid && format('BuildingApp-Orch-{0}', inputs.orchestrator_runid) || 'Build' }}
 
 on:
@@ -10,9 +10,11 @@ on:
         type: string
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  build:
+  build_job:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -20,4 +22,4 @@ jobs:
     - name: Simulate build
       run: |
         echo "This build process for application D"
-        sleep 10
+        sleep 5
