@@ -1,0 +1,16 @@
+name: Invalidate PR
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches: [ main ]
+
+jobs:
+  invalidate-prs:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Dispatch invalidate
+      run: |
+        gh api /repos/amisovic/orchestrator/dispatches -f event_type=invalidate -f client_payload[action]=invalidate -f client_payload[branch]=${{ github.head_ref }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT_WORKFLOWS }}
