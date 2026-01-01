@@ -8,45 +8,16 @@ on:
         description: 'Orchestrator run ID'
         required: false
         type: string
-  push:
-    branches: [ main ]
-  pull_request:
-    types: [opened, synchronize]
-    branches: [ main ]
-  repository_dispatch:
-    types: [orchestrate-success]
 
 jobs:
-  invalidate-prs:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-    - name: Invalidate all PRs
-      run: |
-        gh api /repos/amisovic/orchestrator/dispatches -f event_type=invalidate -f client_payload[action]=invalidate -f client_payload[branch]=${{ github.head_ref }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.PAT_WORKFLOWS }}
   build:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: Test echo
-      run: echo "test"
     - name: Simulate build
       run: |
         ls -l
         cat repoD.txt || true
         echo "This build process for application D"
-        sleep 3
-      
-  post-orchestrator-status:
-    if: github.event_name == 'repository_dispatch' && github.event.action == 'orchestrate-success'
-    runs-on: ubuntu-latest
-    steps:
-    - name: Post orchestrator-build check run
-      run: |
-        head_sha="${{ github.event.client_payload.head_sha }}"
-        gh api -X POST /repos/${{ github.repository }}/check-runs -f name=orchestrator-build -f head_sha=$head_sha -f status=completed -f conclusion=success -f output[title]="All builds passed" -f output[summary]="Orchestration completed successfully"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        sleep 5
